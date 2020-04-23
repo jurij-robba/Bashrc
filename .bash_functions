@@ -79,3 +79,16 @@ function fish()
     test -z "$1" -o -z "$2" && echo 'Decrypt: fish INFILE OUTFILE' && return 1
     openssl bf-cbc -d -salt -in "$1" -out "$2"
 }
+#================================FLATTEN=======================================#
+function rmemptydirs()
+{
+	find "$1" -type d -empty -delete
+}
+
+function flatten()
+{
+    local DIR="$1"
+	find "$DIR" -mindepth 2 -type f -exec mv -t "$DIR" --backup=t '{}' +
+	rmemptydirs "$1"
+}
+
