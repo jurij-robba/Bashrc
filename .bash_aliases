@@ -1,34 +1,51 @@
-#=====================================LS===========================00==========#
-alias ls='ls --color=auto'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
-alias lsl='ls -l'
-alias lsx='ls -lXB'             #  Sort by extension
-alias lss='ls -lSr'             #  Sort by size, biggest last
-alias lst='ls -ltr'             #  Sort by creation date, most recent last
-alias lsc='ls -ltcr'            #  Sort by/show change time, most recent last
-alias lsu='ls -ltur'            #  Sort by/show access time, most recent last
-#=====================================CP=======================================#
-alias cp="cp -v -i"
-#=====================================CD=======================================#
+#======================================LS======================================#
+alias ls='ls --color=always'
+alias lsa='ls -A --color=always'
+alias dir='dir --color=always'
+alias vdir='vdir --color=always'
+alias lsext='ls -X1 --color=always'
+alias lssize='ls -Ss1 --color=always'
+alias lscreation='ls -t1 --color=always'
+alias lschange='ls -tc1 --color=always'
+alias lsaccess='ls -tu --color=always'
+#======================================CP======================================#
+alias cp='cp -v -i -r'
+#======================================CD======================================#
 alias ..='cd ..'
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias cd..='cd ..'
-#=====================================RM=======================================#
+#======================================RM======================================#
 alias rm='rm -ri'
-#====================================GREP======================================#
-alias grep="grep --color=auto"
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-#==============================POWER SETTINGS==================================#
+#=====================================FIND=====================================#
+alias grep="grep -nR --color=auto"
+alias fgrep='fgrep -nR --color=auto'
+alias egrep='egrep -nR --color=auto'
+alias ff="find . -name $1"
+#=====================================WGET=====================================#
+alias wget='wget -c'
+#================================POWER SETTINGS================================#
 alias hibernate="sudo systemctl hibernate"
 alias suspend="sudo systemctl suspend"
 alias reboot="sudo shutdown -r now"
 alias poweroff="sudo shutdown -h now"
-#===================================CLEAR======================================#
+#====================================CLEAR=====================================#
 alias clc='clear'
-#===================================MAKE=======================================#
+#=====================================MAKE=====================================#
 alias makeinstall='sudo make install'
 alias make='clear && make'
-#===================================COUNT======================================#
+#===================================PATH=======================================#
+alias path='echo -e ${PATH//:/\\n}'
+alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+#====================================KITTY=====================================#
+alias icat='kitty +kitten icat'
+alias d='kitty +kitten diff'
+#====================================COUNT=====================================#
 alias countlines='find . -type f -not -path "*/.git/*" -not -path "*/build/*" | xargs wc -l'
 alias countlinescpp='find . -type f \( -name \*.cpp -o -name \*.hpp \) -exec wc -l {} +'
+alias countlinesrust='find . -type f \( -name \*.rs -o -name \*.toml \) -exec wc -l {} +'
+#=====================================MISC=====================================#
+alias py='python3'
+alias please='sudo $(history -p !!)'
+alias pong="ping 8.8.8.8"

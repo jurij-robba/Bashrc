@@ -1,13 +1,15 @@
-#================================UPDATE / CLEAN==============================#
+#================================UPDATE / CLEAN================================#
 function updateall()
 {
-	sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y
+    clear
+    pkcon refresh && pkcon update
+	#sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y
 }
 function cleanall()
 {
 	sudo apt-get autoremove && sudo apt-get clean && sudo aptitude purge ~c
 }
-#============================COMPRESS / DECOMPRESS===========================#
+#============================COMPRESS / DECOMPRESS=============================#
 function extract()
 {
     if [ -f $1 ] ; then
@@ -31,13 +33,13 @@ function extract()
 }
 function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"; }
 function makezip() { zip -r "${1%%/}.zip" "$1" ; }
-#===============================CLEAN==========================================#
+#====================================CLEAN=====================================#
 function cleantmp() { find . -type f -name '*~' -delete; }
 function cleanperm() { sudo chmod -R u=rwX,g=rX,o= "$@" ;}
-#================================BACKUP======================================#
+#====================================BACKUP====================================#
 function backup()
 {
-	[ $# -ne 1 ] && echo "backup: specifiy file to backup"
+	[ $# -ne 1 ] && echo "backup: specify file to backup"
 	cp "$1" "$1.bck"
 }
 function swap()
@@ -52,7 +54,7 @@ function swap()
     mv "$2" "$1"
     mv $TMPFILE "$2"
 }
-#==================================MAN=======================================#
+#====================================MAN=====================================#
 man() {
 	env LESS_TERMCAP_mb=$(printf "\e[1;31m") \
 	LESS_TERMCAP_md=$(printf "\e[1;31m") \
@@ -63,23 +65,23 @@ man() {
 	LESS_TERMCAP_us=$(printf "\e[1;32m") \
 	man "$@"
 }
-#===========================FILE MANIPULATION=================================#
+#==============================FILE MANIPULATION==============================#
 mkcdir () {
     mkdir -p -v $1
     cd $1
 }
-#===============================BLOWFISH=======================================#
-function blow()
+#==================================BLOWFISH===================================#
+function encrypt()
 {
     [ -z "$1" ] && echo 'Encrypt: blow FILE' && return 1
     openssl bf-cbc -salt -in "$1" -out "$1.bf"
 }
-function fish()
+function decrypt()
 {
     test -z "$1" -o -z "$2" && echo 'Decrypt: fish INFILE OUTFILE' && return 1
     openssl bf-cbc -d -salt -in "$1" -out "$2"
 }
-#================================FLATTEN=======================================#
+#===================================FOLDER====================================#
 function rmemptydirs()
 {
 	find "$1" -type d -empty -delete
@@ -91,4 +93,11 @@ function flatten()
 	find "$DIR" -mindepth 2 -type f -exec mv -t "$DIR" --backup=t '{}' +
 	rmemptydirs "$1"
 }
+#==================================HISTORY===================================#
+rmhist(){ history -d "$1"; }
+rmhistlast(){ history -d "$(history | tail -n 2 | head -n 1 | awk '{print $1}')"; }
+#===================================PRETTY===================================#
+function pretty()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
+
+
 
